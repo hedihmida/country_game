@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/game.css">
+    <title>Document</title>
+</head>
+<body>
+   
+    <div class="card-parent">
+        <%- include('partials/component1.ejs') %>
+        <div class="lines">
+        <div class="line1"></div>
+        <div class="vs">VS</div>
+        <div class="line2"></div>
+
+         </div>
+        <%- include('partials/component2.ejs') %>
+    </div>
+
+
+
+
+<script >
+
+const flag1 = document.getElementById("flag1");
+const name1 = document.getElementById("name1");
+const size1 = document.getElementById("size1");
+const flag2 = document.getElementById("flag2");
+const name2 = document.getElementById("name2");
+const size2 = document.getElementById("size2");
+const score = document.getElementsByClassName("score");
+var sc = 0;
+if(size2.innerText=="undefined"){
+  size2.innerText = "0";
+}
+
+  async function guess() {
+    try {
+      const response = await fetch('http://localhost:3000/guess');
+      const data = await response.json();
+      flag1.src = flag2.src;
+      name1.innerText = name2.innerText ;
+      size1.innerText  = size2.innerText ;
+      size2.innerText  = data.size;
+      name2.innerText  = data.name;
+      flag2.src = data.flag;
+     
+    } catch(error) {
+      // handle any errors
+    }
+  }
+
+async function more(){
+if((+size2.innerText)>=(+size1.innerText)){
+  sc++;
+  score[0].innerText = "score: " + sc.toString(); 
+  await guess();
+  
+ 
+}
+else{
+    location.reload();
+  }
+    
+
+}
+
+async function less(){
+if((+size2.innerText)<=(+size1.innerText)){
+  sc++;
+  score[0].innerText = "score: " + sc.toString(); 
+  await guess();
+  
+ 
+}
+else{
+    location.reload();
+  }
+    
+
+}
+    </script>
+</body>
+</html>
